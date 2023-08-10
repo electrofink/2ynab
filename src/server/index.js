@@ -66,7 +66,7 @@ app.post('/file', async (req, res) => {
 
 app.get('/file', async (req, res) => {
     const fileId = req.query.filepond;
-    const path = `${os.tmpdir()}/${fileId}-YNAB.csv`
+    const path = `${os.tmpdir()}/${fileId}-YNAB.csv`;
     if (fileId && fs.existsSync(path)) {
         res.download(path, 'YNAB.csv');
     } else {
