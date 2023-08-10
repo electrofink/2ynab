@@ -7,7 +7,7 @@
     <script src="filepond.js" type="application/ecmascript"></script>
     <style>
         .filepond--root {
-            height: calc(66.67vh - 3rem);
+            height: calc(66.67vh - 2em);
             font-size: clamp(2rem, 2vw + 2vh, 4rem);
         }
 
@@ -16,8 +16,9 @@
         }
 
         .filepond--root .filepond--drop-label {
-            min-height: calc(66.67vh);
+            height: calc(66.67vh - 2em);
         }
+
 
         .box {
             display: flex;
@@ -29,10 +30,11 @@
         }
 
         input[type="submit"] {
+            margin-top: 1em;
             background-color: #4495d7;
             color: #f5f5fa;
             width: 100%;
-            height: calc(33.33vh - 2rem);
+            height: calc(33.33vh - 2em);
             font-size: clamp(2rem, 2vw + 2vh, 4rem);
             border-radius: 0.5em;
             box-sizing: border-box;
@@ -43,6 +45,20 @@
 <div class="box">
     <form class="form">
         <input type="file">
+        <div class="date-range">
+            <div>
+            <label>
+                From:
+                <input type="date">
+            </label>
+            </div>
+        <div>
+            <label>
+                To:
+                <input type="date">
+            </label>
+        </div>
+        </div>
         <input type="submit" formaction="/file" value="Convert to YNAB">
     </form>
 </div>
