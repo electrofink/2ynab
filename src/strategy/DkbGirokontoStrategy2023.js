@@ -59,7 +59,7 @@ class DkbGirokontoStrategy2023 extends BaseStrategy {
         const memo = data.verwendungszweck;
         return [
             date.toISODate(),
-            data.zahlungspflicht,
+            data.zahlungsempfang,
             '',
             memo,
             Math.abs(Math.min(amount, 0)),
