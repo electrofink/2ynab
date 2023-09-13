@@ -55,10 +55,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     formData.append('fromDate', fromDateInput.value);
                     formData.append('toDate', toDateInput.value);
                     return formData;
+                },
+                onload: (response) => {
+                    const data = JSON.parse(response);
+                    fromDateInput.value = data.fromDate;
+                    toDateInput.value = data.toDate;
+                    return data.fileId;
                 }
-            }
+            },
         }
     });
 
     pond.labelFileProcessingError = 'Invalid DKB CSV file'
+    // pond.on('processfile', (error, file) => {
+    //     // Use the response as needed
+    //     console.log('Response from server:', file);
+    //
+    //     // You can access the entire response here
+    // });
 });
