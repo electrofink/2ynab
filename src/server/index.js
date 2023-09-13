@@ -35,7 +35,7 @@ function detectStrategy(inFile) {
 }
 
 app.post('/file', async (req, res) => {
-    const form = formidable({});
+    const form = new formidable.IncomingForm();
 
     form.parse(req, async (err, fields, files) => {
         if (err) {
@@ -46,6 +46,12 @@ app.post('/file', async (req, res) => {
             try {
                 const inFile = files.filepond.filepath;
                 const fileId = files.filepond.newFilename;
+
+                // Default to sensible dates when not selected
+                const fromDate = fields.fromDate ? fields.fromDate : '1990-01-01';
+                const toDate = fields.toDate ? fields.toDate : '2050-01-01';
+                console.log(fromDate, toDate);
+
                 const strategy = detectStrategy(inFile); // Detect the strategy dynamically
                 const converter = new ConverterFactory(strategy.constructor.name);
                 const result = await converter.convert(inFile);
