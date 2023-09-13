@@ -40,6 +40,10 @@ class BaseStrategy {
         this.maxDate = DateTime.fromISO("2050-01-01");
     }
 
+    getMinDate() { return this.minDate }
+    getMaxDate() { return this.maxDate }
+
+
     transformAsync(parser, lineTransformer, fromDate, toDate) {
         return new Promise(function (resolve, reject) {
             const results = [];

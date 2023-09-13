@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 onload: (response) => {
                     const data = JSON.parse(response);
-                    fromDateInput.value = data.fromDate;
-                    toDateInput.value = data.toDate;
+                    fromDateInput.value = data.minDate;
+                    toDateInput.value = data.maxDate;
                     return data.fileId;
                 }
             },
@@ -67,10 +67,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     pond.labelFileProcessingError = 'Invalid DKB CSV file'
-    // pond.on('processfile', (error, file) => {
-    //     // Use the response as needed
-    //     console.log('Response from server:', file);
-    //
-    //     // You can access the entire response here
-    // });
 });
