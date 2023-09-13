@@ -1,10 +1,10 @@
-const csv = require('csv')
-const parse = csv.parse
+const csv = require('csv');
+const parse = csv.parse;
 const parseDecimalNumber = require('parse-decimal-number');
 const {getFileContentsCsv} = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
 const os = require("os");
-const { DateTime } = require("luxon");
+const {DateTime} = require("luxon");
 
 const SETTINGS = {
     delimiter: ';',
@@ -37,7 +37,7 @@ const SETTINGS = {
             'Inflow'
         ],
     },
-    on_record: (record, ) => record.status !== 'Gebucht' ? null: record
+    on_record: (record,) => record.status !== 'Gebucht' ? null : record
 };
 
 class DkbGirokontoStrategy2023 extends BaseStrategy {
@@ -47,11 +47,6 @@ class DkbGirokontoStrategy2023 extends BaseStrategy {
         console.log('DkbGirokontoStrategy2023');
     }
 
-    /**
-     *
-     * @param data
-     * @returns {*[]}
-     */
     static lineTransform(data) {
         const betrag_eur = data.betrag_eur.replace("\u00A0€", "");
         const amount = parseDecimalNumber(betrag_eur, ".,");
@@ -67,26 +62,16 @@ class DkbGirokontoStrategy2023 extends BaseStrategy {
         ];
     }
 
-    /**
-     *
-     * @param inFile
-     * @returns {Promise<void>}
-     */
-    async convert(inFile) {
+    async convert(inFile, from, to) {
         console.log(`In: ${inFile}`);
 
         const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd, 'utf-8');
 
         const data = parse(input, SETTINGS);
 
-        return await super.transformAsync(data, DkbGirokontoStrategy2023.lineTransform);
+        return await super.transformAsync(data, DkbGirokontoStrategy2023.lineTransform, from, to);
     }
 
-    /**
-     *
-     * @param inFile
-     * @returns {boolean}
-     */
     static isMatch(inFile) {
         // Read the first few lines of the file
         const fileContent = getFileContentsCsv(inFile, 0, 10, 'utf-8');

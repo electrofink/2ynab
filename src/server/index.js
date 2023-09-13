@@ -5,6 +5,7 @@ const formidable = require("formidable");
 const {getOutFromInfile} = require("../lib/helper");
 const fs = require("fs");
 const os = require("os");
+const { DateTime } = require("luxon");
 const DkbGirokontoStrategy = require("../strategy/DkbGirokontoStrategy");
 const DkbCreditCardStrategy = require("../strategy/DkbCreditCardStrategy");
 const DkbGirokontoStrategy2023 = require("../strategy/DkbGirokontoStrategy2023");
@@ -48,13 +49,12 @@ app.post('/file', async (req, res) => {
                 const fileId = files.filepond.newFilename;
 
                 // Default to sensible dates when nothing was selected
-                const fromDate = fields.fromDate ? fields.fromDate : '1990-01-01';
-                const toDate = fields.toDate ? fields.toDate : '2050-01-01';
-                console.log(fromDate, toDate);
+                const fromDate = DateTime.fromISO(fields.fromDate ? fields.fromDate : '1990-01-01');
+                const toDate = DateTime.fromISO(fields.toDate ? fields.toDate : '2050-01-01');
 
                 const strategy = detectStrategy(inFile); // Detect the strategy dynamically
                 const converter = new ConverterFactory(strategy.constructor.name);
-                const result = await converter.convert(inFile);
+                const result = await converter.convert(inFile, fromDate, toDate);
                 const outFile = getOutFromInfile(inFile);
                 fs.writeFileSync(outFile, result);
                 // eslint-disable-next-line no-console
