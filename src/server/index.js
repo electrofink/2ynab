@@ -59,8 +59,12 @@ app.post('/file', async (req, res) => {
                 fs.writeFileSync(outFile, result);
                 // eslint-disable-next-line no-console
                 console.log(`Written: ${outFile}`);
-                res.type('text/plain');
-                res.end(fileId);
+                const response = {
+                    fileId,
+                    fromDate: fromDate.toISODate(),
+                    toDate: toDate.toISODate()
+                }
+                res.json(response);
             } catch (err) {
                 // eslint-disable-next-line no-console
                 console.error(err.message);

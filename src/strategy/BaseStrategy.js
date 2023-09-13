@@ -35,6 +35,11 @@ const SETTINGS = {
 
 class BaseStrategy {
 
+    constructor() {
+        this.minDate = DateTime.fromISO("1990-01-01");
+        this.maxDate = DateTime.fromISO("2050-01-01");
+    }
+
     transformAsync(parser, lineTransformer, fromDate, toDate) {
         return new Promise(function (resolve, reject) {
             const results = [];
