@@ -47,7 +47,7 @@ app.post('/file', async (req, res) => {
                 const inFile = files.filepond.filepath;
                 const fileId = files.filepond.newFilename;
 
-                // Default to sensible dates when not selected
+                // Default to sensible dates when nothing was selected
                 const fromDate = fields.fromDate ? fields.fromDate : '1990-01-01';
                 const toDate = fields.toDate ? fields.toDate : '2050-01-01';
                 console.log(fromDate, toDate);
