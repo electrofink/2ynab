@@ -1,6 +1,7 @@
-const csv = require('csv')
-const transform = csv.transform
-const stringify = csv.stringify
+const csv = require('csv');
+const { DateTime } = require("luxon");
+const transform = csv.transform;
+const stringify = csv.stringify;
 
 const SETTINGS = {
     delimiter: ';',
@@ -46,6 +47,10 @@ class BaseStrategy {
 
             parser
                 .pipe(transform(lineTransformer))
+                .filter(data => {
+                    const date = DateTime.fromISO(data[0]);
+                    return true;
+                })
                 .pipe(stringifier)
                 .on('data', (data) => {
                     results.push(data.toString());

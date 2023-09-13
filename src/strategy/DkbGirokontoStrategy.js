@@ -1,8 +1,9 @@
-const csv = require('csv')
-const parse = csv.parse
+const csv = require('csv');
+const parse = csv.parse;
 const parseDecimalNumber = require('parse-decimal-number');
 const {getFileContentsCsv} = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
+const { DateTime } = require("luxon");
 
 const SETTINGS = {
     delimiter: ';',
@@ -53,8 +54,9 @@ class DkbGirokontoStrategy extends BaseStrategy {
     static lineTransform(data) {
         const amount = parseDecimalNumber(data.betrag_eur, ".,");
         const memo = data.verwendungszweck;
+        const date = DateTime.fromFormat(data.buchungstag, "dd.MM.yyyy");
         return [
-            data.buchungstag,
+            date.toISODate(),
             data.auftraggeber_beguenstiger,
             '',
             memo,

@@ -4,6 +4,7 @@ const parse = csv.parse
 const parseDecimalNumber = require('parse-decimal-number');
 const {getFileContentsCsv, findHeaderInCsv} = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
+const { DateTime } = require("luxon");
 
 const SETTINGS = {
     delimiter: ';',
@@ -49,16 +50,15 @@ class DkbCreditCardStrategy extends BaseStrategy {
     static lineTransform(data) {
         const amount = parseDecimalNumber(data.amount_eur, ".,");
         const memo = data.amount_foreign_currency_text;
-        const result = [
-            data.date_receipt,
+        const date = DateTime.fromFormat(data.date_receipt, "dd.MM.yyyy");
+        return [
+            date.toISODate(),
             data.description,
             '',
             memo,
             Math.abs(Math.min(amount, 0)),
             Math.abs(Math.max(amount, 0))
         ];
-        console.log(result);
-        return result;
     }
 
     /**
