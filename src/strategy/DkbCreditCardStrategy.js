@@ -4,7 +4,7 @@ const parse = csv.parse
 const parseDecimalNumber = require('parse-decimal-number');
 const {getFileContentsCsv, findHeaderInCsv} = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
-const { DateTime } = require("luxon");
+const {DateTime} = require("luxon");
 
 const SETTINGS = {
     delimiter: ';',
@@ -42,11 +42,6 @@ class DkbCreditCardStrategy extends BaseStrategy {
         console.log('DkbCreditCardStrategy');
     }
 
-    /**
-     *
-     * @param data
-     * @returns {*[]}
-     */
     static lineTransform(data) {
         const amount = parseDecimalNumber(data.amount_eur, ".,");
         const memo = data.amount_foreign_currency_text;
@@ -61,12 +56,7 @@ class DkbCreditCardStrategy extends BaseStrategy {
         ];
     }
 
-    /**
-     *
-     * @param inFile
-     * @returns {Promise<void>}
-     */
-    async convert(inFile) {
+    async convert(inFile, from, to) {
         console.log(`In: ${inFile}`);
 
         const headerIndex = findHeaderInCsv(inFile,
@@ -77,14 +67,9 @@ class DkbCreditCardStrategy extends BaseStrategy {
 
         const parser = parse(input, SETTINGS);
 
-        return await super.transformAsync(parser, DkbCreditCardStrategy.lineTransform);
+        return await super.transformAsync(parser, DkbCreditCardStrategy.lineTransform, from, to);
     }
 
-    /**
-     *
-     * @param inFile
-     * @returns {boolean}
-     */
     static isMatch(inFile) {
         // Read the first few lines of the file
         const fileContent = getFileContentsCsv(inFile, 0, 10, 'latin1');

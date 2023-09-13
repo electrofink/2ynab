@@ -1,5 +1,5 @@
 const csv = require('csv');
-const { DateTime } = require("luxon");
+const {DateTime} = require("luxon");
 const transform = csv.transform;
 const stringify = csv.stringify;
 
@@ -34,13 +34,8 @@ const SETTINGS = {
 };
 
 class BaseStrategy {
-    /**
-     *
-     * @param parser
-     * @param lineTransformer
-     * @returns {Promise<any>}
-     */
-    transformAsync(parser, lineTransformer = (data) => data) {
+
+    transformAsync(parser, lineTransformer, fromDate, toDate) {
         return new Promise(function (resolve, reject) {
             const results = [];
             const stringifier = stringify(SETTINGS.stringifier);
@@ -49,7 +44,7 @@ class BaseStrategy {
                 .pipe(transform(lineTransformer))
                 .filter(data => {
                     const date = DateTime.fromISO(data[0]);
-                    return true;
+                    return date >= fromDate && date <= toDate;
                 })
                 .pipe(stringifier)
                 .on('data', (data) => {
