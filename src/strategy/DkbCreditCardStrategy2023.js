@@ -1,5 +1,6 @@
 const csv = require('csv')
 const parse = csv.parse
+const {parse: syncParse} = require('csv/sync');
 const parseDecimalNumber = require('parse-decimal-number');
 const {getFileContentsCsv} = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
@@ -63,9 +64,12 @@ class DkbCreditCardStrategy2023 extends BaseStrategy {
 
         const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd, 'utf-8');
 
-        const data = parse(input, SETTINGS);
+        const parser = parse(input, SETTINGS);
+        const records = syncParse(input, SETTINGS);
+        this.minDate = DateTime.fromFormat(records.at(-1).belegdatum, "dd.MM.yy");
+        this.maxDate = DateTime.fromFormat(records.at(0).belegdatum, "dd.MM.yy");
 
-        return await super.transformAsync(data, DkbCreditCardStrategy2023.lineTransform, from, to);
+        return await super.transformAsync(parser, DkbCreditCardStrategy2023.lineTransform, from, to);
     }
 
     static isMatch(inFile) {

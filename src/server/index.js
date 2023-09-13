@@ -61,8 +61,8 @@ app.post('/file', async (req, res) => {
                 console.log(`Written: ${outFile}`);
                 const response = {
                     fileId,
-                    fromDate: fromDate.toISODate(),
-                    toDate: toDate.toISODate()
+                    minDate: converter.getMinDate().toISODate(),
+                    maxDate: converter.getMaxDate().toISODate()
                 }
                 res.json(response);
             } catch (err) {
