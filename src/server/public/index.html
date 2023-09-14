@@ -5,6 +5,7 @@
     <title>2YNAB Conversion</title>
     <link href="filepond.css" rel="stylesheet"/>
     <script src="filepond.js" type="application/ecmascript"></script>
+    <script src="download.js" type="application/ecmascript"></script>
     <style>
         .filepond--root {
             height: calc(50vh - 2em);
@@ -75,7 +76,7 @@
 </head>
 <body>
 <div class="box">
-    <form class="form">
+    <form class="form" id="dateForm" action="/convert" method="post">
         <input type="file">
         <div class="date-range">
             <div>
@@ -96,12 +97,9 @@
             <button id="lastMonth">Last month</button>
             <button id="currentMonth">Current month</button>
         </div>
-        <input type="submit" formaction="/file" value="Convert to YNAB">
+        <input type="submit" value="Convert to YNAB">
     </form>
 </div>
 </body>
-<script>
-
-</script>
 <script src="client.js" type="application/ecmascript"></script>
 </html>

@@ -36,7 +36,7 @@ function detectStrategy(inFile) {
 }
 
 app.post('/file', async (req, res) => {
-    const form = new formidable.IncomingForm();
+    const form = formidable({});
 
     form.parse(req, async (err, fields, files) => {
         if (err) {
@@ -48,21 +48,20 @@ app.post('/file', async (req, res) => {
                 const inFile = files.filepond.filepath;
                 const fileId = files.filepond.newFilename;
 
-                // Default to sensible dates when nothing was selected
-                const fromDate = DateTime.fromISO(fields.fromDate ? fields.fromDate : '1990-01-01');
-                const toDate = DateTime.fromISO(fields.toDate ? fields.toDate : '2050-01-01');
-
                 const strategy = detectStrategy(inFile); // Detect the strategy dynamically
                 const converter = new ConverterFactory(strategy.constructor.name);
-                const result = await converter.convert(inFile, fromDate, toDate);
-                const outFile = getOutFromInfile(inFile);
-                fs.writeFileSync(outFile, result);
+
+                const minDate = converter.getDateRange(inFile).minDate.toISODate()
+                const maxDate = converter.getDateRange(inFile).maxDate.toISODate()
+                // const result = await converter.convert(inFile, fromDate, toDate);
+                // const outFile = getOutFromInfile(inFile);
+                // fs.writeFileSync(outFile, result);
                 // eslint-disable-next-line no-console
-                console.log(`Written: ${outFile}`);
+                // console.log(`Written: ${outFile}`);
                 const response = {
                     fileId,
-                    minDate: converter.getMinDate().toISODate(),
-                    maxDate: converter.getMaxDate().toISODate()
+                    minDate,
+                    maxDate
                 }
                 res.json(response);
             } catch (err) {
@@ -82,6 +81,35 @@ app.get('/file', async (req, res) => {
     } else {
         res.redirect('/?failed=true');
     }
+});
+
+app.post('/convert', async(req, res) => {
+    const form = formidable({});
+
+    form.parse(req, async (err, fields, ) => {
+        if (err) {
+            // eslint-disable-next-line no-console
+            console.error(err);
+            res.sendStatus(400);
+        } else {
+            const fileId = fields.filepond;
+            console.log(fields);
+            const fromDate = DateTime.fromISO(fields.fromDate ? fields.fromDate : '1990-01-01');
+            const toDate = DateTime.fromISO(fields.toDate ? fields.toDate : '2050-01-01');
+            const inFile = `${os.tmpdir()}/${fileId}`;
+            const strategy = detectStrategy(inFile); // Detect the strategy dynamically
+            const converter = new ConverterFactory(strategy.constructor.name);
+            const result = await converter.convert(inFile, fromDate, toDate);
+            const outFile = getOutFromInfile(inFile);
+            fs.writeFileSync(outFile, result);
+            console.log(outFile);
+            if (fileId && fs.existsSync(outFile)) {
+                res.download(outFile, 'YNAB.csv');
+            } else {
+                res.redirect('/?failed=true');
+            }
+        }
+    });
 });
 
 module.exports = app;

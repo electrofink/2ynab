@@ -1,11 +1,11 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const last30DaysButton = document.getElementById('last30Days');
     const lastMonthButton = document.getElementById('lastMonth');
     const currentMonthButton = document.getElementById('currentMonth');
     const fromDateInput = document.getElementById('fromDate');
     const toDateInput = document.getElementById('toDate');
 
-    last30DaysButton.addEventListener('click', function(event) {
+    last30DaysButton.addEventListener('click', function (event) {
         event.preventDefault();
         const today = new Date();
         const last30Days = new Date(today);
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toDateInput.value = formatDate(today);
     });
 
-    lastMonthButton.addEventListener('click', function(event) {
+    lastMonthButton.addEventListener('click', function (event) {
         event.preventDefault();
         const today = new Date();
         const lastMonth = new Date(today);
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toDateInput.value = formatDate(lastMonthLastDay);
     });
 
-    currentMonthButton.addEventListener('click', function(event) {
+    currentMonthButton.addEventListener('click', function (event) {
         event.preventDefault();
         const today = new Date();
         const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -66,5 +66,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    pond.labelFileProcessingError = 'Invalid DKB CSV file'
+    pond.labelFileProcessingError = 'Invalid DKB CSV file';
+});
+
+document.getElementById('dateForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Get the values from the date fields
+    const fromDate = document.getElementById('fromDate').value;
+    const toDate = document.getElementById('toDate').value;
+
+    // Create a FormData object and append the values
+    const formData = new FormData(this);
+    formData.append('fromDate', fromDate);
+    formData.append('toDate', toDate);
+
+    console.log(formData);
+
+    // Send the form data to the server using fetch or XMLHttpRequest
+    // For example using fetch:
+    fetch(this.action, {
+        method: this.method,
+        body: formData
+    }).then(response => {
+        return response.blob();
+    }).then(blob => {
+        download(blob, "YNAB.csv", "text/csv");
+    }).catch(error => {
+        console.error(error);
+    });
 });
