@@ -34,16 +34,6 @@ const SETTINGS = {
 };
 
 class BaseStrategy {
-
-    constructor() {
-        this.minDate = DateTime.fromISO("1990-01-01");
-        this.maxDate = DateTime.fromISO("2050-01-01");
-    }
-
-    getMinDate() { return this.minDate }
-    getMaxDate() { return this.maxDate }
-
-
     transformAsync(parser, lineTransformer, fromDate, toDate) {
         return new Promise(function (resolve, reject) {
             const results = [];

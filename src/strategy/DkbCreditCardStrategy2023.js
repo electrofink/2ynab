@@ -65,11 +65,18 @@ class DkbCreditCardStrategy2023 extends BaseStrategy {
         const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd, 'utf-8');
 
         const parser = parse(input, SETTINGS);
-        const records = syncParse(input, SETTINGS);
-        this.minDate = DateTime.fromFormat(records.at(-1).belegdatum, "dd.MM.yy");
-        this.maxDate = DateTime.fromFormat(records.at(0).belegdatum, "dd.MM.yy");
 
         return await super.transformAsync(parser, DkbCreditCardStrategy2023.lineTransform, from, to);
+    }
+
+    getDateRange(inFile) {
+        const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd, 'utf-8');
+
+        const records = syncParse(input, SETTINGS);
+        const minDate = DateTime.fromFormat(records.at(-1).belegdatum, "dd.MM.yy");
+        const maxDate = DateTime.fromFormat(records.at(0).belegdatum, "dd.MM.yy");
+
+        return {minDate, maxDate}
     }
 
     static isMatch(inFile) {
