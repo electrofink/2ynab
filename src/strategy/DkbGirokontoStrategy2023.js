@@ -19,6 +19,7 @@ const SETTINGS = {
         'zahlungsempfang',
         'verwendungszweck',
         'umsatztyp',
+        'iban',
         'betrag_eur',
         'glaubiger_id',
         'mandatsreferenz',
@@ -53,9 +54,10 @@ class DkbGirokontoStrategy2023 extends BaseStrategy {
         const amount = parseDecimalNumber(betrag_eur, ".,");
         const date = DateTime.fromFormat(data.buchungsdatum, "dd.MM.yy");
         const memo = data.verwendungszweck;
+        const payee = amount > 0 ? data.zahlungspflicht : data.zahlungsempfang;
         return [
             date.toISODate(),
-            data.zahlungsempfang,
+            payee,
             '',
             memo,
             Math.abs(Math.min(amount, 0)),
@@ -89,11 +91,11 @@ class DkbGirokontoStrategy2023 extends BaseStrategy {
 
         // Check if the file content matches the expected header pattern
         const headerPattern = [
-            /^"Konto";/,
+            // /^"Konto";/,
             /^""$/,
             /^"Kontostand vom \d{2}\.\d{2}\.\d{4}:";/,
             /^""$/,
-            /^"Buchungsdatum";"Wertstellung";"Status";"Zahlungspflichtige\*r";"Zahlungsempfänger\*in";"Verwendungszweck";"Umsatztyp";"Betrag";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz"$/,
+            /^"Buchungsdatum";"Wertstellung";"Status";"Zahlungspflichtige\*r";"Zahlungsempfänger\*in";"Verwendungszweck";"Umsatztyp";"IBAN";"Betrag \(€\)";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz"$/,
         ];
 
         // Split the lines and filter out empty lines
