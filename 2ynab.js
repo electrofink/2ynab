@@ -15,7 +15,6 @@ if (!strategy) {
     ConverterFactory.getStrategies().some(strategyToCheck => {
         if (ConverterFactory.getStrategy(strategyToCheck).isMatch(inFile)) {
             strategy = strategyToCheck;
-
             return true;
         }
     });
