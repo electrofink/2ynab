@@ -91,7 +91,7 @@ class DkbGirokontoStrategy2023 extends BaseStrategy {
 
         // Check if the file content matches the expected header pattern
         const headerPattern = [
-            // /^"Konto";/,
+            /^"Girokonto";/,
             /^""$/,
             /^"Kontostand vom \d{2}\.\d{2}\.\d{4}:";/,
             /^""$/,
