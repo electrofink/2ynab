@@ -8,7 +8,7 @@ const os = require("os");
 const {DateTime} = require("luxon");
 
 const SETTINGS = {
-    delimiter: ';',
+    delimiter: ',',
     skip_empty_lines: true,
     skip_lines_with_empty_values: true,
     columns: [
@@ -85,11 +85,11 @@ class DkbCreditCardStrategy2023 extends BaseStrategy {
 
         // Check if the file content matches the expected header pattern
         const headerPattern = [
-            /^"Karte";/,
+            /^"Karte",/,
             /^""$/,
-            /^"Saldo vom \d{2}\.\d{2}\.\d{4}:";/,
+            /^"Saldo vom \d{2}\.\d{2}\.\d{4}:",/,
             /^""$/,
-            /^"Belegdatum";"Wertstellung";"Status";"Beschreibung";"Umsatztyp";"Betrag";"Fremdwährungsbetrag"$/,
+            /^"Belegdatum","Wertstellung","Status","Beschreibung","Umsatztyp","Betrag","Fremdwährungsbetrag"$/,
         ];
 
         // Split the lines and filter out empty lines
@@ -98,6 +98,7 @@ class DkbCreditCardStrategy2023 extends BaseStrategy {
         // Check the header pattern against non-empty lines
         for (let i = 0; i < headerPattern.length; i++) {
             if (!headerPattern[i].test(lines[i])) {
+                console.error(`Validation failed on line ${i}: ${lines[i]}, pattern: ${headerPattern[i]}`);
                 return false;
             }
         }
