@@ -1,9 +1,9 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/to-ynab:latest', '.' ]
+    args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/to-ynab:$REF_NAME', '.' ]
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/to-ynab:latest']
+    args: ['push', 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/to-ynab:$REF_NAME']
 
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
@@ -11,7 +11,7 @@ steps:
       - 'deploy'
       - 'to-ynab'
       - '--image'
-      - 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/to-ynab:latest'
+      - 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/to-ynab:$REF_NAME'
       - '--region'
       - 'europe-west1'
       - '--platform'
@@ -20,4 +20,4 @@ steps:
       - '--port'
       - '3000'
 images:
-  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/to-ynab:latest'
+  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/to-ynab:$REF_NAME'
