@@ -8,7 +8,7 @@ const {DateTime} = require("luxon");
 const {parse: syncParse} = require("csv/sync");
 
 const SETTINGS = {
-    delimiter: ',',
+    delimiter: ';',
     skip_empty_lines: true,
     skip_lines_with_empty_values: true,
     columns: [
@@ -91,11 +91,11 @@ class DkbGirokontoStrategy2023 extends BaseStrategy {
 
         // Check if the file content matches the expected header pattern
         const headerPattern = [
-            /^"Girokonto",/,
+            /^"Girokonto";/,
             /^""$/,
-            /^"Kontostand vom \d{2}\.\d{2}\.\d{4}:",/,
+            /^"Kontostand vom \d{2}\.\d{2}\.\d{4}:";/,
             /^""$/,
-            /^"Buchungsdatum","Wertstellung","Status","Zahlungspflichtige\*r","Zahlungsempfänger\*in","Verwendungszweck","Umsatztyp","IBAN","Betrag \(€\)","Gläubiger-ID","Mandatsreferenz","Kundenreferenz"$/,
+            /^"Buchungsdatum";"Wertstellung";"Status";"Zahlungspflichtige\*r";"Zahlungsempfänger\*in";"Verwendungszweck";"Umsatztyp";"IBAN";"Betrag \(€\)";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz"$/,
         ];
 
         // Split the lines and filter out empty lines
