@@ -6,8 +6,8 @@ const {getOutFromInfile} = require("../lib/helper");
 const fs = require("fs");
 const os = require("os");
 const { DateTime } = require("luxon");
-const DkbGirokontoStrategy = require("../strategy/DkbGirokontoStrategy");
-const DkbCreditCardStrategy = require("../strategy/DkbCreditCardStrategy");
+require("../strategy/DkbGirokontoStrategy");
+require("../strategy/DkbCreditCardStrategy");
 const DkbGirokontoStrategy2023 = require("../strategy/DkbGirokontoStrategy2023");
 const DkbCreditCardStrategy2023 = require("../strategy/DkbCreditCardStrategy2023");
 

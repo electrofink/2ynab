@@ -9,4 +9,4 @@ EXPOSE 3000
 
 RUN npm ci
 
-CMD [ "node", "server.js", "DkbGirokontoStrategy"]
+CMD [ "node", "server.js"]
