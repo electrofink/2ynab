@@ -18,8 +18,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Create an array of available conversion strategies
 const strategies = [
-    new DkbGirokontoStrategy(),
-    new DkbCreditCardStrategy(),
+    // new DkbGirokontoStrategy(),
+    // new DkbCreditCardStrategy(),
     new DkbGirokontoStrategy2023(),
     new DkbCreditCardStrategy2023(),
     // Add other strategies here
