@@ -41,7 +41,7 @@ class DkbCreditCardStrategy2023 extends BaseStrategy {
 
     constructor() {
         super();
-        console.log('DkbGirokontoStrategy2023');
+        console.log('DkbCreditCardStrategy2023');
     }
 
     static lineTransform(data) {
@@ -89,7 +89,7 @@ class DkbCreditCardStrategy2023 extends BaseStrategy {
             /^""$/,
             /^"Saldo vom \d{2}\.\d{2}\.\d{4}:";/,
             /^""$/,
-            /^"Belegdatum";"Wertstellung";"Status";"Beschreibung";"Umsatztyp";"Betrag";"Fremdwährungsbetrag"$/,
+            /^"Belegdatum";"Wertstellung";"Status";"Beschreibung";"Umsatztyp";"Betrag \(€\)";"Fremdwährungsbetrag"$/,
         ];
 
         // Split the lines and filter out empty lines

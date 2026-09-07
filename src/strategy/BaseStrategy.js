@@ -34,7 +34,7 @@ const SETTINGS = {
 };
 
 class BaseStrategy {
-    transformAsync(parser, lineTransformer, fromDate, toDate) {
+    transformAsync(parser, lineTransformer, fromDate = DateTime.fromISO('1900-01-01'), toDate = DateTime.fromISO('2100-01-01')) {
         return new Promise(function (resolve, reject) {
             const results = [];
             const stringifier = stringify(SETTINGS.stringifier);
